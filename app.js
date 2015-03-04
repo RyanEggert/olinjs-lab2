@@ -3,6 +3,7 @@
 
 // external requirements
 var express = require("express");
+var exphbs = require("express-handlebars");
 var path = require("path");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
