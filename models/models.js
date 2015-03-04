@@ -4,26 +4,38 @@ var supergoose = require("supergoose");
 var models = {};
 
 // user
+var giftsentSchema = mongoose.Schema(
+  name: String,
+  image: String,
+  link: String,
+  price: Number,
+  to: String
+);
+
+var giftrecSchema = mongoose.Schema(
+  name: String,
+  image: String,
+  link: String,
+  price: Number,
+  from: String
+);
+
 
 var userSchema = mongoose.Schema({
   name: String,
-  local: {
-    username: String,
-    password: String,
-  },
   facebook: {
     id: String,
     profilelink: String,
     name: String
-  }
+  },
+  gift: {
+    sent: giftsentSchema,
+    rec: giftrecSchema
+  },
+  keywords: [String]
 });
-userSchema.methods.verifyPassword = function(password, user) {
-  if (user.local.password === password) {
-    return true;
-  } else {
-    return false;
-  }
-};
+
+
 userSchema.plugin(supergoose);
 
 models.authUser = mongoose.model("authUser", userSchema);
