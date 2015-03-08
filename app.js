@@ -1,5 +1,5 @@
-//// CHEEPR ////
-// "Like twitter, but cheepr." //
+//// GIFTR ////
+// "Things for some people" //
 
 // external requirements
 var express = require("express");
@@ -21,7 +21,7 @@ var module_exists = function(name) {
 };
 
 // internal requirements
-var cheeprs = require("./routes/cheepr");
+var index = require("./routes/index");
 var users = require("./routes/users");
 var authrs = require("./routes/auth");
 if (module_exists('./oauth.js')) {
@@ -29,7 +29,6 @@ if (module_exists('./oauth.js')) {
 }
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
-var LocalStrategy = require('passport-local').Strategy;
 
 // app creation & configuration
 var app = express();
@@ -86,29 +85,6 @@ passport.use(new FacebookStrategy({
   });
 }));
 
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    authUser.findOrCreate({
-      'local.username': username
-    }, {
-      'local.password': password,
-      'name': username,
-    }, function(err, user) {
-      if (err) {
-        return done(err);
-      }
-      if (!user) {
-        users.makeuser(username, password);
-        return done(donereturn.err, donereturn.ret);
-      }
-      if (!user.verifyPassword(password, user)) {
-        return done(null, false);
-      }
-      return done(null, user);
-    });
-  }
-));
-
 var ensureAuthenticated = function(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
@@ -128,7 +104,7 @@ passport.deserializeUser(function(obj, done) {
 });
 
 // routes
-app.get('/', ensureAuthenticated, cheeprs.home);
+app.get('/', ensureAuthenticated, index.home);
 
 app.get('/login', authrs.login);
 app.post('/logout', function(req, res) {
@@ -136,19 +112,8 @@ app.post('/logout', function(req, res) {
   res.redirect('/');
 });
 
-app.post('/users/auth/local',
-  passport.authenticate('local', {
-    failureRedirect: '/login'
-  }),
-  function(req, res) {
-    res.redirect('/');
-  });
-
 
 app.post('/users/new/', users.new);
-
-app.post('/cheep/new/', cheeprs.new);
-app.delete('/cheep/delete/', cheeprs.delete);
 
 
 app.get('/auth/facebook/',
