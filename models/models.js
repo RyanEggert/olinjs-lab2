@@ -1,25 +1,23 @@
 var mongoose = require("mongoose");
 var supergoose = require("supergoose");
-// var bcrypt   = require('bcrypt-nodejs');
 var models = {};
 
 // user
-var giftsentSchema = mongoose.Schema(
-  name: String,
-  image: String,
+var giftsentSchema = mongoose.Schema({
+  name:String,
+  image:String,
   link: String,
   price: Number,
   to: String
-);
+});
 
-var giftrecSchema = mongoose.Schema(
+var giftrecSchema = mongoose.Schema({
   name: String,
   image: String,
   link: String,
   price: Number,
   from: String
-);
-
+});
 
 var userSchema = mongoose.Schema({
   name: String,
@@ -29,12 +27,11 @@ var userSchema = mongoose.Schema({
     name: String
   },
   gift: {
-    sent: giftsentSchema,
-    rec: giftrecSchema
+    sent: [giftsentSchema],
+    rec: [giftrecSchema]
   },
   keywords: [String]
 });
-
 
 userSchema.plugin(supergoose);
 
@@ -52,6 +49,5 @@ var cheepSchema = mongoose.Schema({
   }
 });
 models.authCheep = mongoose.model("authCheep", cheepSchema);
-
 
 module.exports = models;
