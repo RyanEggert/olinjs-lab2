@@ -11,33 +11,24 @@ var bodyParser = require("body-parser");
 var session = require('express-session');
 var mongoose = require("mongoose");
 
-var module_exists = function(name) {
-  try {
-    var modloc = require.resolve(name);
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
-
 // internal requirements
-var index = require("./routes/index");
-var users = require("./routes/users");
-var authrs = require("./routes/auth");
-if (module_exists('./oauth.js')) {
+var index = require('./routes/index');
+var users = require('./routes/users');
+var authrs = require('./routes/auth');
+var utils = require('./utils/utils');
+if (utils.module_exists('./oauth.js')) {
   var config = require('./oauth.js');
 }
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var passportconfig = require('./utils/passportconfig');
 
 // app creation & configuration
 var app = express();
 
 var PORT = process.env.PORT || 3000;
 var mongoURI = process.env.MONGOURI || "mongodb://localhost/test";
-var fbclientID = process.env.FBCID || config.facebook.clientID;
-var fbclientsecret = process.env.FBCSR || config.facebook.clientSecret;
-var fbcallbackurl = process.env.FBCBU || 'http://localhost:3000/auth/facebook/callback';
+
 
 app.engine("handlebars", exphbs({
   defaultLayout: "main"
@@ -56,55 +47,10 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
-app.use(passport.initialize());
-app.use(passport.session());
-
-var models = require("./models/models");
-var authUser = models.authUser;
-
-// passport config
-passport.use(new FacebookStrategy({
-  clientID: fbclientID,
-  clientSecret: fbclientsecret,
-  callbackURL: fbcallbackurl
-}, function(accessToken, refreshToken, profile, done) {
-  process.nextTick(function() {
-    authUser.findOrCreate({
-      'facebook.id': profile.id
-    }, {
-      'facebook.name': profile.displayName,
-      'facebook.profilelink': profile.profileUrl,
-      'name': profile.displayName
-    }, function(err, user) {
-      if (err) {
-        return done(err, user);
-      } else {
-        return done(null, user);
-      }
-    });
-  });
-}));
-
-var ensureAuthenticated = function(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
-};
-
-// passport serialize and deserialize
-passport.serializeUser(function(user, done) {
-  done(null, {
-    name: user.name,
-    id: user._id
-  });
-});
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
-});
+passportconfig(app);
 
 // routes
-app.get('/', ensureAuthenticated, index.home);
+app.get('/', authrs.ensureAuthenticated, index.home);
 
 app.get('/login', authrs.login);
 app.post('/logout', function(req, res) {
@@ -112,9 +58,7 @@ app.post('/logout', function(req, res) {
   res.redirect('/');
 });
 
-
 app.post('/users/new/', users.new);
-
 
 app.get('/auth/facebook/',
   passport.authenticate('facebook', {
