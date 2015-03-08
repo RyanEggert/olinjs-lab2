@@ -29,7 +29,6 @@ if (module_exists('./oauth.js')) {
 }
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
-var LocalStrategy = require('passport-local').Strategy;
 
 // app creation & configuration
 var app = express();
@@ -85,29 +84,6 @@ passport.use(new FacebookStrategy({
     });
   });
 }));
-
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    authUser.findOrCreate({
-      'local.username': username
-    }, {
-      'local.password': password,
-      'name': username,
-    }, function(err, user) {
-      if (err) {
-        return done(err);
-      }
-      if (!user) {
-        users.makeuser(username, password);
-        return done(donereturn.err, donereturn.ret);
-      }
-      if (!user.verifyPassword(password, user)) {
-        return done(null, false);
-      }
-      return done(null, user);
-    });
-  }
-));
 
 var ensureAuthenticated = function(req, res, next) {
   if (req.isAuthenticated()) {
