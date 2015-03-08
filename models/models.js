@@ -26,6 +26,12 @@ var userSchema = mongoose.Schema({
     profilelink: String,
     name: String
   },
+  linkedin: {
+    id: String,
+    profilelink: String,
+    pictureUrl: String,
+    accessToken: String
+  },
   gift: {
     sent: [giftsentSchema],
     rec: [giftrecSchema]

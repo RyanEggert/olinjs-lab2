@@ -47,11 +47,27 @@ var passfun = function (app) {
     clientSecret: liclientsecret,
     callbackURL: "http://localhost:3000/auth/linkedin/callback",
     scope: ['r_network', 'r_fullprofile'],
-    state: true
-  }, function (accessToken, refreshToken, profile, done) {
+    state: true,
+    passReqToCallback: true
+  }, function (req, accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
-        // store accessToken
-      return done(null, profile);
+      var lijson = profile._json;
+      authUser.update({
+        _id: req.user.id
+      }, {
+        linkedin: {
+          id: lijson.id,
+          profilelink: lijson.publicProfileUrl,
+          pictureUrl: lijson.pictureUrl,
+          accessToken: accessToken
+        }
+      }, function (err) {
+        if (err) {
+          console.log(err);
+        }
+        return done(null, null); // keep facebook login as session.
+      });
+
     });
   }));
 

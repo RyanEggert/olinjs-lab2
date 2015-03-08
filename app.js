@@ -72,12 +72,12 @@ app.get('/auth/facebook/callback',
     failureRedirect: '/'
   }),
   function (req, res) {
-    res.redirect('/');
+    res.redirect('/auth/linkedin');
   });
 
 app.get('/auth/linkedin/',
   passport.authenticate('linkedin'),
-  function (req, res) {});
+  function (req, res) {console.log(req.user.id)});
 
 app.get('/auth/linkedin/callback',
   passport.authenticate('linkedin', {
