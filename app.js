@@ -29,7 +29,6 @@ var app = express();
 var PORT = process.env.PORT || 3000;
 var mongoURI = process.env.MONGOURI || "mongodb://localhost/test";
 
-
 app.engine("handlebars", exphbs({
   defaultLayout: "main"
 }));
@@ -53,7 +52,7 @@ passportconfig(app);
 app.get('/', authrs.ensureAuthenticated, index.home);
 
 app.get('/login', authrs.login);
-app.post('/logout', function(req, res) {
+app.post('/logout', function (req, res) {
   req.logout();
   res.redirect('/');
 });
@@ -64,7 +63,7 @@ app.get('/auth/facebook/',
   passport.authenticate('facebook', {
     failureRedirect: '/login'
   }),
-  function(req, res) {
+  function (req, res) {
     res.redirect('/');
   });
 
@@ -72,11 +71,24 @@ app.get('/auth/facebook/callback',
   passport.authenticate('facebook', {
     failureRedirect: '/'
   }),
-  function(req, res) {
+  function (req, res) {
     res.redirect('/');
   });
+
+app.get('/auth/linkedin/',
+  passport.authenticate('linkedin'),
+  function (req, res) {});
+
+app.get('/auth/linkedin/callback',
+  passport.authenticate('linkedin', {
+    failureRedirect: '/'
+  }),
+  function (req, res) {
+    res.redirect('/');
+  });
+
 // connections
 mongoose.connect(mongoURI);
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log("Application running on port:", PORT);
 });
