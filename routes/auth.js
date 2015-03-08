@@ -1,5 +1,5 @@
 // Routes related to signing in and signing out.
-// Given more time, I could put most Passport stuff here.
+
 var authroutes = {};
 
 var login = function(req, res) {
@@ -12,5 +12,14 @@ var login = function(req, res) {
 };
 
 authroutes.login = login;
+
+var ensureAuthenticated = function (req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+};
+
+authroutes.ensureAuthenticated = ensureAuthenticated;
 
 module.exports = authroutes;
