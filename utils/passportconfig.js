@@ -1,5 +1,6 @@
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 var models = require("../models/models");
 var authUser = models.authUser;
 var utils = require('../utils/utils');
@@ -10,6 +11,10 @@ if (utils.module_exists('../oauth.js')) {
 var fbclientID = process.env.FBCID || config.facebook.clientID;
 var fbclientsecret = process.env.FBCSR || config.facebook.clientSecret;
 var fbcallbackurl = process.env.FBCBU || 'http://localhost:3000/auth/facebook/callback';
+
+var liclientID = process.env.LICID || config.linkedin.clientID;
+var liclientsecret = process.env.LICSR || config.linkedin.clientSecret;
+var licallbackurl = process.env.LICBU || 'http://localhost:3000/auth/linkedin/callback';
 
 var passfun = function (app) {
   app.use(passport.initialize());
@@ -34,6 +39,35 @@ var passfun = function (app) {
           return done(null, user);
         }
       });
+    });
+  }));
+
+  passport.use(new LinkedInStrategy({
+    clientID: liclientID,
+    clientSecret: liclientsecret,
+    callbackURL: "http://localhost:3000/auth/linkedin/callback",
+    scope: ['r_network', 'r_fullprofile'],
+    state: true,
+    passReqToCallback: true
+  }, function (req, accessToken, refreshToken, profile, done) {
+    process.nextTick(function () {
+      var lijson = profile._json;
+      authUser.update({
+        _id: req.user.id
+      }, {
+        linkedin: {
+          id: lijson.id,
+          profilelink: lijson.publicProfileUrl,
+          pictureUrl: lijson.pictureUrl,
+          accessToken: accessToken
+        }
+      }, function (err) {
+        if (err) {
+          console.log(err);
+        }
+        return done(null, null); // keep facebook login as session.
+      });
+
     });
   }));
 
