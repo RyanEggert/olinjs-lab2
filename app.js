@@ -129,8 +129,8 @@ passport.deserializeUser(function(obj, done) {
 
 // routes
 app.get('/', ensureAuthenticated, cheeprs.home);
-app.get('/gift', cheeprs.gift_get);
-app.post('/gift', cheeprs.gift_post);
+app.get('/gift/:name', cheeprs.gift_get);
+app.post('/gift/:name', cheeprs.gift_post);
 
 app.get('/login', authrs.login);
 app.post('/logout', function(req, res) {

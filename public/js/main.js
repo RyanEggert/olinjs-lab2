@@ -82,15 +82,18 @@ var newcheep = function() {
 
 var gift_submit = function() {
   var money = $gift_form.find('#money').val();
-  var user = 
-  $.post('/gift', {
-    'money': money
+  var sent_user = document.getElementById("sent_user").innerHTML;
+  var rec_user = document.getElementById("rec_user").value;
+  console.log(rec_user);
+  $.post('/gift/'+sent_user, {
+    'money': money,
+    'sent_user': sent_user,
+    'rec_user': rec_user
     //add information about sent_user and rec_user
   })
   .done(function(data, status) {
-    console.log(data);
     $("#gift_form").hide(1000);
-    $("#random_gift").append("You spend $" + data.money + ", below is the random gift's information~")
+    $("#random_gift").append(data.sent_user + ", you spend $" + data.money + " on " + data.rec_user + ", below is the random gift's information~")
   .error(
     function(data, status) {
       console.log("status", status);

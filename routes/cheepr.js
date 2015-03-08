@@ -43,16 +43,17 @@ var home = function(req, res) {
 cheeprroutes.home = home;
 
 var gift_get = function(req, res) {
-  res.render('gift');
+  res.render('gift',{sent_user:req.params.name});
 }
 
 cheeprroutes.gift_get = gift_get;
 
 var gift_post = function(req, res) {
-  var money = req.body.money;
   var data = {};
-  data.money = money;
-  //add sent and rec user info
+  data.money = req.body.money;
+  data.sent_user = req.body.sent_user;
+  data.rec_user = req.body.rec_user;
+  //add rec user info
   res.send(data);
 }
 
