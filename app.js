@@ -12,6 +12,7 @@ var session = require('express-session');
 var mongoose = require("mongoose");
 
 // internal requirements
+var apis = require('./routes/apis');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var authrs = require('./routes/auth');
@@ -77,14 +78,14 @@ app.get('/auth/facebook/callback',
 
 app.get('/auth/linkedin/',
   passport.authenticate('linkedin'),
-  function (req, res) {console.log(req.user.id)});
+  function (req, res) {});
 
 app.get('/auth/linkedin/callback',
   passport.authenticate('linkedin', {
     failureRedirect: '/'
   }),
   function (req, res) {
-    res.redirect('/');
+    res.redirect('/apis');
   });
 
 // connections

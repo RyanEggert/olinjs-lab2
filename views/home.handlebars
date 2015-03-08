@@ -3,8 +3,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-          <div class="well">
-          </div>
+            <div class="well">
+                {{#each connections}}
+                <p>{{this.name}}</p>
+                <p>{{this.tagline}}</p>
+                {{/each}}
+            </div>
         </div>
     </div>
 </div>
