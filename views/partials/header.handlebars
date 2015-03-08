@@ -1,4 +1,4 @@
-<div class="navbar navbar-default navbar-fixed-top navbar-material-purple-800 shadow-z-2">
+<div class="navbar navbar-default navbar-fixed-top shadow-z-2">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
@@ -12,10 +12,15 @@
             <ul class="nav navbar-nav">
                 <li class=""><a href="/#">Link</a>
                 </li>
+                <li class="" id="userinfo" user="{{currentuser.name}}" uid="{{currentuser._id}}"></li>
             </ul>
-            <form class="navbar-form navbar-left form-group-material-purple-800" ng-submit="search()" role="search">
-                <input class="form-control" data-hint="Search for articles..." ng-model="playerName" name="playerName" placeholder="Search..." type="text">
-            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="signin"><a href="/login">Sign in</a>
+                </li>
+                <li id="signout"><a href="">Sign out</a>
+                </li>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
