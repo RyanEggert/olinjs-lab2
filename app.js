@@ -112,14 +112,6 @@ app.post('/logout', function(req, res) {
   res.redirect('/');
 });
 
-app.post('/users/auth/local',
-  passport.authenticate('local', {
-    failureRedirect: '/login'
-  }),
-  function(req, res) {
-    res.redirect('/');
-  });
-
 
 app.post('/users/new/', users.new);
 
