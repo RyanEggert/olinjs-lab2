@@ -42,6 +42,22 @@ var home = function(req, res) {
 
 cheeprroutes.home = home;
 
+var gift_get = function(req, res) {
+  res.render('gift');
+}
+
+cheeprroutes.gift_get = gift_get;
+
+var gift_post = function(req, res) {
+  var money = req.body.money;
+  var data = {};
+  data.money = money;
+  //add sent and rec user info
+  res.send(data);
+}
+
+cheeprroutes.gift_post = gift_post;
+
 // new cheep @ /cheep/new/
 var makenewcheep = function(req, res) {
   var in_text = req.body.words;

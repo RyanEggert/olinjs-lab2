@@ -14,7 +14,7 @@ if (currentuser === "") {
   currentuser = "None";
 }
 var currentuserid = $('nav').attr("uid");
-
+var $gift_form = $("#gift_form");
 
 //Event Callback Funtions
 var shownewtweet = function(data, status) {
@@ -80,6 +80,25 @@ var newcheep = function() {
   }).done(shownewtweet).error(onError);
 };
 
+var gift_submit = function() {
+  var money = $gift_form.find('#money').val();
+  var user = 
+  $.post('/gift', {
+    'money': money
+    //add information about sent_user and rec_user
+  })
+  .done(function(data, status) {
+    console.log(data);
+    $("#gift_form").hide(1000);
+    $("#random_gift").append("You spend $" + data.money + ", below is the random gift's information~")
+  .error(
+    function(data, status) {
+      console.log("status", status);
+      console.log("error", data);
+    });
+  });
+}
+
 // Page Functions
 if (currentuser === "") {
   $newcheepin.hide();
@@ -89,6 +108,13 @@ if (currentuser === "") {
 $newcheepin.submit(function(event) {
   event.preventDefault();
   newcheep();
+});
+
+$gift_form.submit(function(event) {
+  event.preventDefault();
+  gift_submit();
+  //go get Amazon working
+
 });
 
 // if "enter" key pressed in cheep box, send new cheep

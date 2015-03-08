@@ -8,6 +8,7 @@ var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var session = require('express-session');
+var exphbs = require('express-handlebars')
 var mongoose = require("mongoose");
 
 var module_exists = function(name) {
@@ -128,6 +129,8 @@ passport.deserializeUser(function(obj, done) {
 
 // routes
 app.get('/', ensureAuthenticated, cheeprs.home);
+app.get('/gift', cheeprs.gift_get);
+app.post('/gift', cheeprs.gift_post);
 
 app.get('/login', authrs.login);
 app.post('/logout', function(req, res) {

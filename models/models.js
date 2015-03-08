@@ -4,22 +4,16 @@ var supergoose = require("supergoose");
 var models = {};
 
 // user
-var giftsentSchema = mongoose.Schema(
+var giftSchema = mongoose.Schema({
   name: String,
   image: String,
   link: String,
   price: Number,
-  to: String
-);
-
-var giftrecSchema = mongoose.Schema(
-  name: String,
-  image: String,
-  link: String,
-  price: Number,
+  to: String,
   from: String
-);
+});
 
+models.Gift = mongoose.model("Gift", giftSchema);
 
 var userSchema = mongoose.Schema({
   name: String,
@@ -28,13 +22,9 @@ var userSchema = mongoose.Schema({
     profilelink: String,
     name: String
   },
-  gift: {
-    sent: giftsentSchema,
-    rec: giftrecSchema
-  },
+  gift: { type: mongoose.Schema.Types.ObjectId, ref: 'Gift' },
   keywords: [String]
 });
-
 
 userSchema.plugin(supergoose);
 
