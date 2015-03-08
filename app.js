@@ -77,7 +77,7 @@ app.get('/auth/facebook/callback',
 
 app.get('/auth/linkedin/',
   passport.authenticate('linkedin'),
-  function (req, res) {console.log(req.user.id)});
+  function (req, res) {});
 
 app.get('/auth/linkedin/callback',
   passport.authenticate('linkedin', {
