@@ -21,7 +21,7 @@ var module_exists = function(name) {
 };
 
 // internal requirements
-var cheeprs = require("./routes/cheepr");
+var index = require("./routes/index");
 var users = require("./routes/users");
 var authrs = require("./routes/auth");
 if (module_exists('./oauth.js')) {
@@ -128,7 +128,7 @@ passport.deserializeUser(function(obj, done) {
 });
 
 // routes
-app.get('/', ensureAuthenticated, cheeprs.home);
+app.get('/', ensureAuthenticated, index.home);
 
 app.get('/login', authrs.login);
 app.post('/logout', function(req, res) {
@@ -146,9 +146,6 @@ app.post('/users/auth/local',
 
 
 app.post('/users/new/', users.new);
-
-app.post('/cheep/new/', cheeprs.new);
-app.delete('/cheep/delete/', cheeprs.delete);
 
 
 app.get('/auth/facebook/',

@@ -3,6 +3,9 @@ $(document).ready(function () {
   $.material.init();
 });
 
+var homepage = function(data, status) {
+  window.location.replace('/');
+};
 var currentuser = $('div.navbar #userinfo').attr("user");
 if (currentuser === "") {
   currentuser = "None";
