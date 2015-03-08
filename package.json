@@ -7,13 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "cheepr",
+    "giftr",
     "trendy",
     "cool",
     "best",
     "awesome",
-    "alright",
-    "okay"
+    "gifts"
   ],
   "author": "Ryan Eggert",
   "license": "ISC",
@@ -28,7 +27,6 @@
     "morgan": "^1.5.1",
     "passport": "^0.2.1",
     "passport-facebook": "^1.0.3",
-    "passport-local": "^1.0.0",
     "supergoose": "^0.2.3"
   }
 }
