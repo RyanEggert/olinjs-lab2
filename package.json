@@ -1,7 +1,7 @@
 {
-  "name": "cheepr-premium",
+  "name": "giftr",
   "version": "1.0.0",
-  "description": "A trendy new social media sensation. \"cheepr: Like twitter, but cheepr.\"",
+  "description": "Things for people.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

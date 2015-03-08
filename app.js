@@ -1,5 +1,5 @@
-//// CHEEPR ////
-// "Like twitter, but cheepr." //
+//// GIFTR ////
+// "Things for some people" //
 
 // external requirements
 var express = require("express");
