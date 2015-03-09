@@ -3,21 +3,16 @@ var supergoose = require("supergoose");
 var models = {};
 
 // user
-var giftsentSchema = mongoose.Schema({
+var giftSchema = mongoose.Schema({
   name:String,
   image:String,
   link: String,
   price: Number,
-  to: String
-});
-
-var giftrecSchema = mongoose.Schema({
-  name: String,
-  image: String,
-  link: String,
-  price: Number,
+  to: String,
   from: String
 });
+
+models.Gift = mongoose.model("Gift", giftSchema);
 
 var userSchema = mongoose.Schema({
   name: String,
@@ -33,8 +28,8 @@ var userSchema = mongoose.Schema({
     accessToken: String
   },
   gift: {
-    sent: [giftsentSchema],
-    rec: [giftrecSchema]
+    sent: [giftSchema],
+    rec: [giftSchema]
   },
   keywords: [String]
 });
@@ -42,18 +37,5 @@ var userSchema = mongoose.Schema({
 userSchema.plugin(supergoose);
 
 models.authUser = mongoose.model("authUser", userSchema);
-
-// cheep
-
-var cheepSchema = mongoose.Schema({
-  username: String,
-  userid: String,
-  words: String,
-  date: {
-    type: Date,
-    default: Date.now
-  }
-});
-models.authCheep = mongoose.model("authCheep", cheepSchema);
 
 module.exports = models;
