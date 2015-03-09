@@ -1,9 +1,8 @@
-
 $(document).ready(function () {
   $.material.init();
 });
 
-var homepage = function(data, status) {
+var homepage = function (data, status) {
   window.location.replace('/');
 };
 var currentuser = $('div.navbar #userinfo').attr("user");
@@ -12,7 +11,7 @@ if (currentuser === "") {
 }
 var currentuserid = $('div.navbar #userinfo').attr("uid");
 
-var logouthandler = function(event) {
+var logouthandler = function (event) {
   event.preventDefault();
   $.post('/logout').done(homepage).error(onError);
 };
@@ -20,7 +19,7 @@ var logouthandler = function(event) {
 $("div.navbar li#signout").on("click", logouthandler);
 
 // hide sign out button if no user
-var canyouso = function(username) {
+var canyouso = function (username) {
   if (username === "None") {
     $('div.navbar li#signout').remove();
   } else {
@@ -29,3 +28,14 @@ var canyouso = function(username) {
 };
 
 canyouso(currentuser);
+
+$("div#personpane .friend").hover(
+  function () {
+    $(this).removeClass("shadow-z-2");
+    $(this).addClass("shadow-z-4");
+  },
+  function () {
+    $(this).removeClass("shadow-z-4");
+    $(this).addClass("shadow-z-2");
+  }
+);

@@ -3,11 +3,19 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="well">
-                {{#each connections}}
-                <p>{{this.name}}</p>
-                <p>{{this.tagline}}</p>
-                {{/each}}
+            <div class="well" id="personpane">
+                {{#grouped_each 3 connections}}
+                <div class="row">
+                    {{#each this }}
+                    <div class="col-md-4">
+                        <div class="shadow-z-2 friend withripple">
+                            <img src="{{pictureUrl}}">
+                            <strong>{{ name }}</strong>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+                <br> {{/grouped_each}}
             </div>
         </div>
     </div>

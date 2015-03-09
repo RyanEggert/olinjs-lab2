@@ -16,6 +16,10 @@ var liconnectsparse = function(connections) {
     thisout.name = thiscon.firstName + ' ' + thiscon.lastName;
     thisout.pictureUrl = thiscon.pictureUrl;
     thisout.tagline = thiscon.headline;
+    if (!thisout.pictureUrl || thisout.name === 'private private') {
+      // Remove connections without photos OR without listed names.
+      continue;
+    }
     conout.push(thisout);
   }
   return conout;

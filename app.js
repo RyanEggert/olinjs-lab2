@@ -27,12 +27,17 @@ var passportconfig = require('./utils/passportconfig');
 // app creation & configuration
 var app = express();
 
+var hbs = exphbs.create({
+  helpers: {
+    grouped_each: utils.grouped_each
+  },
+  defaultLayout:"main"
+});
+
 var PORT = process.env.PORT || 3000;
 var mongoURI = process.env.MONGOURI || "mongodb://localhost/test";
 
-app.engine("handlebars", exphbs({
-  defaultLayout: "main"
-}));
+app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
 app.use(logger("dev"));
