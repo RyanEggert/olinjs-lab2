@@ -3,5 +3,34 @@ img {
     height: auto;
 }
 body {
-    padding-top: 70px;
+    padding-top: 25px;
+}
+.navbar-brand {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    margin: auto;
+}
+div#mainscroll {
+    height: 70vh;
+    overflow-y: auto;
+}
+div#maincontainer {
+    z-index: 2000;
+}
+div#mainnav {
+    z-index: 1
+}
+
+h1 {
+  margin-top: 0px;
+}
+
+div.container#loginbox{
+  margin-top: 70px;
+}
+
+div.container#friendbox{
+  max-width: 70vw;
 }

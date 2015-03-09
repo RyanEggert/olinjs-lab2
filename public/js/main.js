@@ -32,10 +32,22 @@ canyouso(currentuser);
 $("div#personpane .friend").hover(
   function () {
     $(this).removeClass("shadow-z-2");
-    $(this).addClass("shadow-z-4");
+    $(this).addClass("shadow-z-3");
   },
   function () {
-    $(this).removeClass("shadow-z-4");
+    $(this).removeClass("shadow-z-3");
     $(this).addClass("shadow-z-2");
   }
 );
+
+$("div#personpane .friend").mousedown(
+  function () {
+    $(this).removeClass("shadow-z-3");
+    $(this).addClass("shadow-z-1");
+  });
+
+$("div#personpane .friend").mouseup(
+  function () {
+    $(this).removeClass("shadow-z-1");
+    $(this).addClass("shadow-z-3");
+  });

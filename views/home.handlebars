@@ -1,21 +1,30 @@
 {{> header}}
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
+<div class="container" id="friendbox">
+    <div class="row" id="mainrow">
+        <div class="col-md-12" id="maincontainer">
             <div class="well" id="personpane">
-                {{#grouped_each 3 connections}}
                 <div class="row">
-                    {{#each this }}
-                    <div class="col-md-4">
-                        <div class="shadow-z-2 friend withripple">
-                            <img src="{{pictureUrl}}">
-                            <strong>{{ name }}</strong>
-                        </div>
+                    <div class="col-md-12">
+                        <h1>Who should get a thing?</h1>
                     </div>
-                    {{/each}}
                 </div>
-                <br> {{/grouped_each}}
+                <div class="row">
+                    <div class="col-md-12" id="mainscroll">
+                        {{#grouped_each 3 connections}}
+                        <div class="row">
+                            {{#each this }}
+                            <div class="col-md-4 col-sm-12">
+                                <div class="shadow-z-2 friend withripple">
+                                    <img src="{{pictureUrl}}">
+                                    <strong>{{ name }}</strong>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div>
+                        <br> {{/grouped_each}}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
