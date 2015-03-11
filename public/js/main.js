@@ -3,7 +3,7 @@ $(document).ready(function () {
   $("input.currency").autoNumeric('init');
 });
 
-// facebook #_=_ fix
+facebook #_=_ fix
 if (window.location.hash && window.location.hash == '#_=_') {
   window.location.hash = '';
 }
@@ -71,9 +71,24 @@ $("div.friend").click(
 
 $('form#giftconfig').submit(function(event) {
   event.preventDefault();
+
+  var money = $("#desiredprice").val();
+  var searchindices = $("#searchindex").val();
+
   $("form#giftconfig").remove();
   $("div.titlebox h1").html('Please wait...');
   $("div#mainscroll").html('<i class="fa fa-spinner fa-pulse"></i>');
+
+  $.post('/gift', {'money': money, 'searchindices': searchindices})
+  .done(function (data, status) {
+    $("div.titlebox h1").html('Random Gift!');
+    $("div#mainscroll").html(data);
+  })
+  .error(function (err, status) {
+    console.error(err);
+  });
+
+
   // send parameters to server
 
   // recieve rendered handlebars and display

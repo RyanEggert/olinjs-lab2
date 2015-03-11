@@ -36,9 +36,15 @@ mainroutes.gift_get = gift_get;
 var gift_post = function (req, res) {
   var data = {};
   data.money = req.body.money;
-  data.sent_user = req.body.sent_user;
-  data.rec_user = req.body.rec_user;
-  //add rec user info
+  if (!req.body.searchindices) {
+    data.searchindices = '';
+  } else {
+    data.searchindices = req.body.searchindices;
+  }
+
+  amazon(data.money, data.searchindices, function(data) {
+    res.render('random', data);
+  });
 };
 
 mainroutes.gift_post = gift_post;

@@ -57,7 +57,7 @@ passportconfig(app);
 // routes
 app.get('/', authrs.ensureAuthenticated, index.home);
 app.get('/gift/:name', index.gift_get);
-app.post('/gift/:name', index.gift_get);
+app.post('/gift/', index.gift_post);
 app.get('/random', index.random);
 
 app.get('/login', authrs.login);
