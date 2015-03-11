@@ -19,6 +19,10 @@ mainroutes.home = home;
 var gift_get = function (req, res) {
   var recname = req.params.name.split('_').join(' ');
   res.render('giftconfig', {
+    currentuser: {
+      name: req.user.name,
+      _id: req.user.id
+    },
     recipient: {
       name: recname
     }
