@@ -6,11 +6,11 @@ var apiroutes = {};
 
 var Linkedin = require('node-linkedin')('api', 'secret', 'callback');
 
-var liconnectsparse = function(connections) {
+var liconnectsparse = function (connections) {
   // Store only the connection information we are interested in
   // [{name, pictureurl, tagline}, ...]
   conout = [];
-  for (var i = 0 ; i <= connections.length - 1; i++) {
+  for (var i = 0; i <= connections.length - 1; i++) {
     var thisout = {};
     thiscon = connections[i];
     thisout.name = thiscon.firstName + ' ' + thiscon.lastName;
@@ -35,8 +35,12 @@ var liconnects = function (req, res, callback) {
       if (err) {
         console.log(err);
       }
-      var parsed = liconnectsparse(connections.values);
-      callback(parsed);
+      if (connections.values) {
+        var parsed = liconnectsparse(connections.values);
+        callback(parsed);
+      } else {
+        callback([]);
+      }
     });
   });
 };
