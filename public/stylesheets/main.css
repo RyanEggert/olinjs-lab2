@@ -34,3 +34,7 @@ div.container#loginbox{
 div.container#friendbox{
   max-width: 70vw;
 }
+
+div.friend {
+    cursor: pointer;
+}

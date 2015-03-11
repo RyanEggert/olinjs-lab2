@@ -1,6 +1,13 @@
 $(document).ready(function () {
   $.material.init();
+  $("input.currency").autoNumeric('init');
 });
+
+// facebook #_=_ fix
+if (window.location.hash && window.location.hash == '#_=_') {
+  window.location.hash = '';
+}
+if (window.location === '/#') {window.location = '/';}
 
 var homepage = function (data, status) {
   window.location.replace('/');
@@ -51,3 +58,23 @@ $("div#personpane .friend").mouseup(
     $(this).removeClass("shadow-z-1");
     $(this).addClass("shadow-z-3");
   });
+
+$("div.friend").click(
+  function () {
+    var redirname = $(this).attr('frname').split(' ').join('_');
+    location = ('/gift/' + redirname + '/');
+  });
+
+
+
+// Gift form submission
+
+$('form#giftconfig').submit(function(event) {
+  event.preventDefault();
+  $("form#giftconfig").remove();
+  $("div.titlebox h1").html('Please wait...');
+  $("div#mainscroll").html('<i class="fa fa-spinner fa-pulse"></i>');
+  // send parameters to server
+
+  // recieve rendered handlebars and display
+});
