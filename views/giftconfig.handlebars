@@ -1,0 +1,54 @@
+{{> header}}
+
+<div class="container" id="friendbox">
+    <div class="row" id="mainrow">
+        <div class="col-md-12" id="maincontainer">
+            <div class="well" id="personpane">
+                <div class="row">
+                    <div class="col-md-12 titlebox">
+                        <h1>What sort of thing?</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="mainscroll">
+                        <form class="form-horizontal" id="giftconfig">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="col-lg-3"></div>
+                                    <label class="col-lg-3 control-label">About how much should you spend on {{ recipient.name }}?</label>
+                                    <div class="input-group col-lg-3">
+                                        <span class="input-group-addon">$</span>
+                                        <input class="form-control currency" type="text" required>
+                                    </div>
+                                    <div class="col-lg-3"></div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-3"></div>
+                                    <label for="select" class="col-lg-3 control-label">They'd probably like</label>
+                                    <div class="col-lg-3">
+                                        <select class="form-control" id="searchindex">
+                                            <option value="All" selected="selected">something.</option>
+                                            <option value="Books">maybe a book.</option>
+                                            <option value="Grocery">some food, I guess.</option>
+                                            <option value="HomeGarden">somthing for their house.</option>
+                                            <option value="Apparel">maybe some clothes.</option>
+                                            <option value="Electronics">some sort of gadget.</option>
+                                            <option value="Jewelry">jewelry, probably.</option>
+                                            <option value="Collectibles">something collectible</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3"></div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-3 col-lg-offset-4">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
