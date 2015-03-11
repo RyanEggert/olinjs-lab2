@@ -1,6 +1,8 @@
 var path = require("path");
 var models = require(path.join(__dirname, "../models/models"));
 var apis = require('./apis');
+var amazon = require('../utils/apactest.js');
+
 
 var mainroutes = {};
 var home = function (req, res) {
@@ -30,20 +32,14 @@ var gift_post = function (req, res) {
   data.sent_user = req.body.sent_user;
   data.rec_user = req.body.rec_user;
   //add rec user info
-  res.send(data);
 };
 
 mainroutes.gift_post = gift_post;
 
 var random = function (req, res) {
-  res.render('random',{
-    //add sent_user and rec_user info
-    name: ,
-    price: ,
-    image: ,
-    link: ,
-    money:100
-  });
+    amazon(1, '', function(data) {
+      res.render('random', data);
+    });
 };
 
 mainroutes.random = random;
