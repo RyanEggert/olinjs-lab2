@@ -35,4 +35,17 @@ var gift_post = function (req, res) {
 
 mainroutes.gift_post = gift_post;
 
+var random = function (req, res) {
+  res.render('random',{
+    //add sent_user and rec_user info
+    name: ,
+    price: ,
+    image: ,
+    link: ,
+    money:100
+  });
+};
+
+mainroutes.random = random;
+
 module.exports = mainroutes;
