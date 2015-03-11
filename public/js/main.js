@@ -2,6 +2,12 @@ $(document).ready(function () {
   $.material.init();
 });
 
+// facebook #_=_ fix
+if (window.location.hash && window.location.hash == '#_=_') {
+  window.location.hash = '';
+}
+if (window.location === '/#') {window.location = '/';}
+
 var homepage = function (data, status) {
   window.location.replace('/');
 };
@@ -50,4 +56,10 @@ $("div#personpane .friend").mouseup(
   function () {
     $(this).removeClass("shadow-z-1");
     $(this).addClass("shadow-z-3");
+  });
+
+$("div.friend").click(
+  function () {
+    var redirname = $(this).attr('frname').split(' ').join('_');
+    location = ('/gift/' + redirname + '/');
   });

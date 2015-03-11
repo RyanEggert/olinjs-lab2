@@ -17,8 +17,11 @@ var home = function (req, res) {
 mainroutes.home = home;
 
 var gift_get = function (req, res) {
-  res.render('gift', {
-    sent_user: req.params.name
+  var recname = req.params.name.split('_').join(' ');
+  res.render('giftconfig', {
+    recipient: {
+      name: recname
+    }
   });
 };
 
