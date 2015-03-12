@@ -3,6 +3,12 @@ img {
     max-height: 100%;
     height: auto;
 }
+
+img.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 body {
     padding-top: 25px;
 }
