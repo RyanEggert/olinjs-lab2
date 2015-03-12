@@ -58,7 +58,7 @@ var passfun = function (app) {
         linkedin: {
           id: lijson.id,
           profilelink: lijson.publicProfileUrl,
-          pictureUrl: lijson.pictureUrl,
+          pictureUrl: lijson.pictureUrl || 'no_image',
           accessToken: accessToken
         }
       }, function (err) {
