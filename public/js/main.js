@@ -81,7 +81,7 @@ $('form#giftconfig').submit(function(event) {
 
   $.post('/gift', {'money': money, 'searchindices': searchindices})
   .done(function (data, status) {
-    $("div.titlebox h1").html('Random Gift!');
+    $("div.titlebox h1").html('We found...');
     $("div#mainscroll").html(data);
   })
   .error(function (err, status) {
