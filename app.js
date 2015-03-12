@@ -31,7 +31,7 @@ var hbs = exphbs.create({
   helpers: {
     grouped_each: utils.grouped_each
   },
-  defaultLayout:"main"
+  defaultLayout: "main"
 });
 
 var PORT = process.env.PORT || 3000;

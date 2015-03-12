@@ -1,8 +1,7 @@
 var path = require("path");
 var models = require(path.join(__dirname, "../models/models"));
 var apis = require('./apis');
-var amazon = require('../utils/apactest.js');
-
+var amazon = require('../utils/amazon.js');
 
 var mainroutes = {};
 var home = function (req, res) {
@@ -17,7 +16,6 @@ var home = function (req, res) {
   });
 };
 mainroutes.home = home;
-
 var gift_get = function (req, res) {
   var recname = req.params.name.split('_').join(' ');
   res.render('giftconfig', {
@@ -42,7 +40,7 @@ var gift_post = function (req, res) {
     data.searchindices = req.body.searchindices;
   }
 
-  amazon(data.money, data.searchindices, function(data) {
+  amazon(data.money, data.searchindices, function (data) {
     res.render('random', data);
   });
 };
@@ -50,9 +48,9 @@ var gift_post = function (req, res) {
 mainroutes.gift_post = gift_post;
 
 var random = function (req, res) {
-    amazon(1, '', function(data) {
-      res.render('random', data);
-    });
+  amazon(1, '', function (data) {
+    res.render('random', data);
+  });
 };
 
 mainroutes.random = random;

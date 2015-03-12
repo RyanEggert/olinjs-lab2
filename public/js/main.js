@@ -3,7 +3,7 @@ $(document).ready(function () {
   $("input.currency").autoNumeric('init');
 });
 
-facebook #_=_ fix
+// facebook #_=_ fix
 if (window.location.hash && window.location.hash == '#_=_') {
   window.location.hash = '';
 }
@@ -77,7 +77,7 @@ $('form#giftconfig').submit(function(event) {
 
   $("form#giftconfig").remove();
   $("div.titlebox h1").html('Please wait...');
-  $("div#mainscroll").html('<i class="fa fa-spinner fa-pulse"></i>');
+  $("div#mainscroll").html('<br><br><br><div class="waiting-icon"><i class="fa fa-spinner fa-5x fa-pulse"></i></div>');
 
   $.post('/gift', {'money': money, 'searchindices': searchindices})
   .done(function (data, status) {
@@ -88,8 +88,4 @@ $('form#giftconfig').submit(function(event) {
     console.error(err);
   });
 
-
-  // send parameters to server
-
-  // recieve rendered handlebars and display
 });

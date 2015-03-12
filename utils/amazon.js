@@ -1,4 +1,4 @@
-// IMPORTANT: USE amazon.js FOR amazon API SERVER FUNCTIONS. THIS IS A TEST FILE.
+//Amazon Product Advertising API from node.js.
 
 var configs = require('../oauth.js');
 var lists = require('./lists.js');
