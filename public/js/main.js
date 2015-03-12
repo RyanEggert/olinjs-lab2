@@ -7,7 +7,9 @@ $(document).ready(function () {
 if (window.location.hash && window.location.hash == '#_=_') {
   window.location.hash = '';
 }
-if (window.location === '/#') {window.location = '/';}
+if (window.location === '/#') {
+  window.location = '/';
+}
 
 var homepage = function (data, status) {
   window.location.replace('/');
@@ -65,27 +67,62 @@ $("div.friend").click(
     location = ('/gift/' + redirname + '/');
   });
 
-
-
 // Gift form submission
 
-$('form#giftconfig').submit(function(event) {
+$('form#giftconfig').submit(function (event) {
   event.preventDefault();
 
   var money = $("#desiredprice").val();
   var searchindices = $("#searchindex").val();
 
+  var $searchinfo = $("div.row#searchinfo");
+
+  $searchinfo.attr('searchindex', searchindices);
+  $searchinfo.attr('desprice', money);
+
   $("form#giftconfig").remove();
   $("div.titlebox h1").html('Please wait...');
   $("div#mainscroll").html('<br><br><br><div class="waiting-icon"><i class="fa fa-spinner fa-5x fa-pulse"></i></div>');
 
-  $.post('/gift', {'money': money, 'searchindices': searchindices})
-  .done(function (data, status) {
-    $("div.titlebox h1").html('Random Gift!');
-    $("div#mainscroll").html(data);
-  })
-  .error(function (err, status) {
-    console.error(err);
-  });
+  $.post('/gift', {
+      'money': money,
+      'searchindices': searchindices
+    })
+    .done(function (data, status) {
+      $("div.titlebox h1").html('We found...');
+      $("div#mainscroll").html(data);
+    })
+    .error(function (err, status) {
+      console.error(err);
+    });
 
+});
+
+// Product page
+
+$("a#gotoamz").click(function (event) {
+  location = '/';
+});
+
+$("button#retry").click(function (event) {
+
+  var $searchinfo = $("div.row#searchinfo");
+
+  var money = $searchinfo.attr('desprice');
+  var searchindices = $searchinfo.attr('searchindex');
+
+  $("div.titlebox h1").html('Trying again...');
+  $("div#mainscroll").html('<br><br><br><div class="waiting-icon"><i class="fa fa-spinner fa-5x fa-pulse"></i></div>');
+
+  $.post('/gift', {
+      'money': money,
+      'searchindices': searchindices
+    })
+    .done(function (data, status) {
+      $("div.titlebox h1").html('We found...');
+      $("div#mainscroll").html(data);
+    })
+    .error(function (err, status) {
+      console.error(err);
+    });
 });

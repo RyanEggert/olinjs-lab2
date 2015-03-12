@@ -21,7 +21,6 @@ if (utils.module_exists('./oauth.js')) {
   var config = require('./oauth.js');
 }
 var passport = require('passport');
-var FacebookStrategy = require('passport-facebook').Strategy;
 var passportconfig = require('./utils/passportconfig');
 
 // app creation & configuration
