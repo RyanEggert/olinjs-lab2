@@ -1,6 +1,10 @@
-// IMPORTANT: USE amazon.js FOR amazon API SERVER FUNCTIONS. THIS IS A TEST FILE.
+//Amazon Product Advertising API from node.js.
+var utils = require('../utils/utils');
 
-var configs = require('../oauth.js');
+if (utils.module_exists('../oauth.js')) {
+  var configs = require('../oauth.js');
+}
+
 var lists = require('./lists.js');
 
 var kwlist = lists.kwlist;
@@ -11,11 +15,10 @@ var util = require('util'),
   OperationHelper = require('apac').OperationHelper;
 
 var opHelper = new OperationHelper({
-  awsId: configs.amazon.akeyAccess,
-  awsSecret: configs.amazon.akeySecret,
-  assocId: configs.amazon.atagAssoc
+  awsId: process.env.AWSID || configs.amazon.akeyAccess,
+  awsSecret: process.env.AWSSC || configs.amazon.akeySecret,
+  assocId: process.env.ASCID || configs.amazon.atagAssoc
 });
-
 
 var amazon = function (money, searchindices, callback) {
   var minprice = (money * 86).toString(); // prices are in cents
@@ -59,9 +62,8 @@ var amazon = function (money, searchindices, callback) {
 
     var index = Math.floor(Math.random() * parsed.ItemSearchResponse.Items[0].Item.length);
 
-
-    //there are tons of irregular item returned by the function that our client side don't want to see, we filter out these 
-    //items by put the index in a while loop and only those item that has all the information that we required can come out 
+    //there are tons of irregular item returned by the function that our client side don't want to see, we filter out these
+    //items by put the index in a while loop and only those item that has all the information that we required can come out
     //to the client side
     while (1) {
       if (index > parsed.ItemSearchResponse.Items[0].Item.length) {
@@ -86,8 +88,7 @@ var amazon = function (money, searchindices, callback) {
       } else if (!parsed.ItemSearchResponse.Items[0].Item[index].OfferSummary[0].LowestNewPrice[0].Amount) {
         index = Math.floor(Math.random() * parsed.ItemSearchResponse.Items[0].Item.length);
         continue;
-      } else if (Number(minprice) > Number(parsed.ItemSearchResponse.Items[0].Item[index].OfferSummary[0].LowestNewPrice[0].Amount[0])
-        || Number(parsed.ItemSearchResponse.Items[0].Item[index].OfferSummary[0].LowestNewPrice[0].Amount[0]) > Number(maxprice) || !Number(maxprice)) {
+      } else if (Number(minprice) > Number(parsed.ItemSearchResponse.Items[0].Item[index].OfferSummary[0].LowestNewPrice[0].Amount[0]) || Number(parsed.ItemSearchResponse.Items[0].Item[index].OfferSummary[0].LowestNewPrice[0].Amount[0]) > Number(maxprice) || !Number(maxprice)) {
         console.log("no result!!");
         callback({
           'result': false
