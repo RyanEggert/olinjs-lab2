@@ -18,7 +18,6 @@ var opHelper = new OperationHelper({
 // params: parameters for operation (optional)
 // callback(err, parsed, raw): callback function handling results. err = potential errors raised from xml2js.parseString() or http.request(). parsed = xml2js parsed response. raw = raw xml response.
 
-//keyword dictionary?
 
 var searchindiceslist = ['Apparel', 'Appliances', 'ArtsAndCrafts', 'Automotive', 
   'Baby', 'Beauty', 'Blended', 'Books', 'Classical', 'Collectibles', 'DigitalMusic', 
@@ -37,13 +36,14 @@ var searchindiceslist = ['Apparel', 'Appliances', 'ArtsAndCrafts', 'Automotive',
 var amazon = function (money, searchindices, callback) {
   var minprice = (money * 90).toString(); // prices are in cents
   var maxprice = (money * 110).toString();
-  var Page = Math.floor(Math.random() * 10);
+  var Page = Math.floor(Math.random() * 5);
 
   // give a random search indix if there is no indices provided
   if (!searchindices) {
     searchindices = searchindiceslist[Math.floor(Math.random() * searchindiceslist.length)];
   }
 
+  //itemsearch function
   opHelper.execute('ItemSearch', {
     'Keywords': ' ',
     'SearchIndex': searchindices,
@@ -57,11 +57,13 @@ var amazon = function (money, searchindices, callback) {
       console.log(err);
     }
 
+    //console.log if there is a search error and return so that the server side will wait the next request from the client side
     if (!parsed.ItemSearchResponse.Items[0]) {
       console.log("search error");
       return;
     }
 
+    //console.log if there is no item in the search, and will render result: false to the cilent side.
     if (!parsed.ItemSearchResponse.Items[0].Item) {
       console.log("no result!!");
       callback({'result':false});
@@ -70,6 +72,10 @@ var amazon = function (money, searchindices, callback) {
 
     var index = Math.floor(Math.random() * parsed.ItemSearchResponse.Items[0].Item.length);
 
+
+    //there are tons of irregular item returned by the function that our client side don't want to see, we filter out these 
+    //items by put the index in a while loop and only those item that has all the information that we required can come out 
+    //to the client side
     while (1) {
       if (index > parsed.ItemSearchResponse.Items[0].Item.length) {
         return;
@@ -93,7 +99,8 @@ var amazon = function (money, searchindices, callback) {
       } else if (!parsed.ItemSearchResponse.Items[0].Item[index].OfferSummary[0].LowestNewPrice[0].Amount) {
         index = Math.floor(Math.random() * parsed.ItemSearchResponse.Items[0].Item.length);
         continue;
-      } else if (Number(minprice) > Number(parsed.ItemSearchResponse.Items[0].Item[index].OfferSummary[0].LowestNewPrice[0].Amount[0]) > Number(maxprice)) {
+      } else if (Number(minprice) > Number(parsed.ItemSearchResponse.Items[0].Item[index].OfferSummary[0].LowestNewPrice[0].Amount[0])
+        || Number(parsed.ItemSearchResponse.Items[0].Item[index].OfferSummary[0].LowestNewPrice[0].Amount[0]) > Number(maxprice)) {
         index = Math.floor(Math.random() * parsed.ItemSearchResponse.Items[0].Item.length);
         continue;
       } else {
@@ -101,12 +108,15 @@ var amazon = function (money, searchindices, callback) {
       }
     }
 
+    //wrap the useful info in variables
+
     var listofitems = parsed.ItemSearchResponse.Items[0].Item;
     var title = listofitems[index].ItemAttributes[0].Title[0]
     var link = listofitems[index].DetailPageURL[0];
     var image = listofitems[index].LargeImage[0].URL[0];
     var price = listofitems[index].OfferSummary[0].LowestNewPrice[0].FormattedPrice[0];
 
+    //wrap the useful data into an object
     var data = {
       'title': title,
       'link': link,
@@ -115,37 +125,10 @@ var amazon = function (money, searchindices, callback) {
       'result': true
     };    
 
+    //callback
     callback(data);
-    // accessing a main image and its height.
-    // console.log(listofitems[0].ImageSets[0].ImageSet) // image sets are all of a product's images.
-    // try except: find in js
-
-    // try:
-    //   find large image
-    // except someerror,ekey: "value", 
-    //   find medium image
-
-
-    // Verify that prices are within our range.
-    // var itemres = parsed.ItemSearchResponse.Items;
-
-    // var items = itemres[0].Item;
-    // for (var i = 0; i <= items.length - 1; i++) {
-    //   console.log(items[i].OfferSummary[0].LowestNewPrice);
-    //   if (Number(minprice) < Number(items[i].OfferSummary[0].LowestNewPrice) < Number(maxprice)) {
-    //     matchprod.push(items[i]);
-    //   }
-    // }
-    // console.log('res');
-    // console.log(matchprod[1].OfferSummary[0].LowestNewPrice);
   });
 
 }
-
-// In the end, we want a product name, a product image (as url), a product price, link to product page on amazon, description text.
-
-//put this into a function
-  // input: maxprice, ...
-  // output: object of desired attributes for one product
 
 module.exports = amazon;
