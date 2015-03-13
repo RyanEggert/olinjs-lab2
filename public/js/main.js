@@ -104,7 +104,15 @@ $('form#giftconfig').submit(function (event) {
       'searchindices': searchindices
     })
     .done(function (data, status) {
-      var result = $("div.row#hidden_result").attr("result");
+      var n = data.search("false");
+      console.log(data);
+      var result;
+
+      if (n === -1) {
+        result = true;
+      } else {
+        result = false;
+      }
 
       if (!result) {
         $("div#spinner_holder").remove();
