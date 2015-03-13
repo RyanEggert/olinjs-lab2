@@ -21,7 +21,6 @@ if (utils.module_exists('./oauth.js')) {
   var config = require('./oauth.js');
 }
 var passport = require('passport');
-var FacebookStrategy = require('passport-facebook').Strategy;
 var passportconfig = require('./utils/passportconfig');
 
 // app creation & configuration
@@ -31,7 +30,7 @@ var hbs = exphbs.create({
   helpers: {
     grouped_each: utils.grouped_each
   },
-  defaultLayout:"main"
+  defaultLayout: "main"
 });
 
 var PORT = process.env.PORT || 3000;

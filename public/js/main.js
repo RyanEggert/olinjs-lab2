@@ -7,7 +7,9 @@ $(document).ready(function () {
 if (window.location.hash && window.location.hash == '#_=_') {
   window.location.hash = '';
 }
-if (window.location === '/#') {window.location = '/';}
+if (window.location === '/#') {
+  window.location = '/';
+}
 
 var homepage = function (data, status) {
   window.location.replace('/');
@@ -80,25 +82,76 @@ $("div.friend").click(
     location = ('/gift/' + redirname + '/');
   });
 
-
-
 // Gift form submission
 
-$('form#giftconfig').submit(function(event) {
+$('form#giftconfig').submit(function (event) {
   event.preventDefault();
 
   var money = $("#desiredprice").val();
   var searchindices = $("#searchindex").val();
 
-  $("form#giftconfig").remove();
+  var $searchinfo = $("div.row#searchinfo");
 
-  amazon_page(money, searchindices);
+  $searchinfo.attr('searchindex', searchindices);
+  $searchinfo.attr('desprice', money);
+
+  $("form#giftconfig").remove();
+  $("div.titlebox h1").html('Please wait...');
+  $("div#mainscroll").html('<div id="spinner_holder"><br><br><br><div class="waiting-icon"><i class="fa fa-spinner fa-5x fa-pulse"></i></div></div>');
+
+  $.post('/gift', {
+      'money': money,
+      'searchindices': searchindices
+    })
+    .done(function (data, status) {
+      var result = $("div.row#hidden_result").attr("result");
+
+      if (!result) {
+        $("div#spinner_holder").remove();
+        $("div.titlebox h1").html('');
+        $("div#mainscroll").append("<h1>No Result</h1><br><br><br><br><br><br><br><br><button id='refresh' class='btn btn-default'>Try something else...</button>");
+      } else {
+        $("div.titlebox h1").html('We found...');
+        $("div#mainscroll").html(data);
+      };
+    })
+    .error(function (err, status) {
+      console.error(err);
+    });
+
 });
 
-$('#retry').click(function () {
-  // event
-  var money = $("#hidden_money").text();
-  var searchindices = $("#hidden_searchindices").text();
+// Product page
 
-  amazon_page(money, searchindices);
+$("a#gotoamz").click(function (event) {
+  location = '/';
+});
+
+$("div#mainscroll").on('click', 'button#retry', function (event) {
+
+  var $searchinfo = $("div.row#searchinfo");
+
+  var money = $searchinfo.attr('desprice');
+  var searchindices = $searchinfo.attr('searchindex');
+
+  $("div.titlebox h1").html('Trying again...');
+  $("div#mainscroll").html('<div id="spinner_holder"><br><br><br><div class="waiting-icon"><i class="fa fa-spinner fa-5x fa-pulse"></i></div></div>');
+
+  $.post('/gift', {
+      'money': money,
+      'searchindices': searchindices
+    })
+    .done(function (data, status) {
+      $("div.titlebox h1").html('We found...');
+      $("div#mainscroll").html(data);
+    })
+    .error(function (err, status) {
+      console.error(err);
+    });
+});
+
+$("div#mainscroll").on('click', 'button#refresh', function (event) {
+
+  location.reload(); 
+
 });
