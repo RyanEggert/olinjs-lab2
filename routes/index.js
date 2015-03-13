@@ -34,7 +34,7 @@ mainroutes.gift_get = gift_get;
 var gift_post = function (req, res) {
   var data = {};
   data.money = req.body.money;
-  if (!req.body.searchindices) {
+  if (req.body.searchindices == "Totally random!") {
     data.searchindices = '';
   } else {
     data.searchindices = req.body.searchindices;

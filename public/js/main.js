@@ -25,6 +25,21 @@ var logouthandler = function (event) {
   $.post('/logout').done(homepage).error(onError);
 };
 
+var amazon_page = function (money, searchindices) {
+  $("div.titlebox h1").html('Please wait...');
+  $("div#mainscroll").html('<i class="fa fa-spinner fa-pulse"></i>');
+
+  $.post('/gift', {'money': money, 'searchindices': searchindices})
+  .done(function (data, status) {
+    // get result
+    $("div.titlebox h1").html('Random Gift!');
+    $("div#mainscroll").html(data);
+  })
+  .error(function (err, status) {
+    console.error(err);
+  });
+};
+
 $("div.navbar li#signout").on("click", logouthandler);
 
 // hide sign out button if no user
@@ -82,15 +97,31 @@ $('form#giftconfig').submit(function (event) {
 
   $("form#giftconfig").remove();
   $("div.titlebox h1").html('Please wait...');
-  $("div#mainscroll").html('<br><br><br><div class="waiting-icon"><i class="fa fa-spinner fa-5x fa-pulse"></i></div>');
+  $("div#mainscroll").html('<div id="spinner_holder"><br><br><br><div class="waiting-icon"><i class="fa fa-spinner fa-5x fa-pulse"></i></div></div>');
 
   $.post('/gift', {
       'money': money,
       'searchindices': searchindices
     })
     .done(function (data, status) {
-      $("div.titlebox h1").html('We found...');
-      $("div#mainscroll").html(data);
+      var n = data.search("false");
+      console.log(data);
+      var result;
+
+      if (n === -1) {
+        result = true;
+      } else {
+        result = false;
+      }
+
+      if (!result) {
+        $("div#spinner_holder").remove();
+        $("div.titlebox h1").html('');
+        $("div#mainscroll").append("<h1>No Result</h1><br><br><br><br><br><br><br><br><button id='refresh' class='btn btn-default'>Try something else...</button>");
+      } else {
+        $("div.titlebox h1").html('We found...');
+        $("div#mainscroll").html(data);
+      };
     })
     .error(function (err, status) {
       console.error(err);
@@ -104,7 +135,7 @@ $("a#gotoamz").click(function (event) {
   location = '/';
 });
 
-$("button#retry").click(function (event) {
+$("div#mainscroll").on('click', 'button#retry', function (event) {
 
   var $searchinfo = $("div.row#searchinfo");
 
@@ -112,7 +143,7 @@ $("button#retry").click(function (event) {
   var searchindices = $searchinfo.attr('searchindex');
 
   $("div.titlebox h1").html('Trying again...');
-  $("div#mainscroll").html('<br><br><br><div class="waiting-icon"><i class="fa fa-spinner fa-5x fa-pulse"></i></div>');
+  $("div#mainscroll").html('<div id="spinner_holder"><br><br><br><div class="waiting-icon"><i class="fa fa-spinner fa-5x fa-pulse"></i></div></div>');
 
   $.post('/gift', {
       'money': money,
@@ -125,4 +156,10 @@ $("button#retry").click(function (event) {
     .error(function (err, status) {
       console.error(err);
     });
+});
+
+$("div#mainscroll").on('click', 'button#refresh', function (event) {
+
+  location.reload(); 
+
 });
