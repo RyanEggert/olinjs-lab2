@@ -3,7 +3,7 @@ $(document).ready(function () {
   $("input.currency").autoNumeric('init');
 });
 
-facebook #_=_ fix
+// facebook #_=_ fix
 if (window.location.hash && window.location.hash == '#_=_') {
   window.location.hash = '';
 }
@@ -21,6 +21,21 @@ var currentuserid = $('div.navbar #userinfo').attr("uid");
 var logouthandler = function (event) {
   event.preventDefault();
   $.post('/logout').done(homepage).error(onError);
+};
+
+var amazon_page = function (money, searchindices) {
+  $("div.titlebox h1").html('Please wait...');
+  $("div#mainscroll").html('<i class="fa fa-spinner fa-pulse"></i>');
+
+  $.post('/gift', {'money': money, 'searchindices': searchindices})
+  .done(function (data, status) {
+    // get result
+    $("div.titlebox h1").html('Random Gift!');
+    $("div#mainscroll").html(data);
+  })
+  .error(function (err, status) {
+    console.error(err);
+  });
 };
 
 $("div.navbar li#signout").on("click", logouthandler);
@@ -76,20 +91,14 @@ $('form#giftconfig').submit(function(event) {
   var searchindices = $("#searchindex").val();
 
   $("form#giftconfig").remove();
-  $("div.titlebox h1").html('Please wait...');
-  $("div#mainscroll").html('<i class="fa fa-spinner fa-pulse"></i>');
 
-  $.post('/gift', {'money': money, 'searchindices': searchindices})
-  .done(function (data, status) {
-    $("div.titlebox h1").html('Random Gift!');
-    $("div#mainscroll").html(data);
-  })
-  .error(function (err, status) {
-    console.error(err);
-  });
+  amazon_page(money, searchindices);
+});
 
+$('#retry').click(function () {
+  // event
+  var money = $("#hidden_money").text();
+  var searchindices = $("#hidden_searchindices").text();
 
-  // send parameters to server
-
-  // recieve rendered handlebars and display
+  amazon_page(money, searchindices);
 });

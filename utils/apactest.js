@@ -37,6 +37,7 @@ var searchindiceslist = ['Apparel', 'Appliances', 'ArtsAndCrafts', 'Automotive',
 var amazon = function (money, searchindices, callback) {
   var minprice = (money * 90).toString(); // prices are in cents
   var maxprice = (money * 110).toString();
+  var Page = Math.floor(Math.random() * 10);
 
   // give a random search indix if there is no indices provided
   if (!searchindices) {
@@ -49,6 +50,7 @@ var amazon = function (money, searchindices, callback) {
     'Avaliability': 'Avaliable',
     'MinimumPrice': minprice,
     'MaximumPrice': maxprice,
+    'ItemPage': Page.toString(),
     'ResponseGroup': 'ItemAttributes, Offers, Images'
   }, function (err, parsed, raw) {
     if (err) {
@@ -69,6 +71,10 @@ var amazon = function (money, searchindices, callback) {
     var index = Math.floor(Math.random() * parsed.ItemSearchResponse.Items[0].Item.length);
 
     while (1) {
+      if (index > parsed.ItemSearchResponse.Items[0].Item.length) {
+        return;
+      }
+
       if (!parsed.ItemSearchResponse.Items[0].Item) {
         index = Math.floor(Math.random() * parsed.ItemSearchResponse.Items[0].Item.length);
         continue;
