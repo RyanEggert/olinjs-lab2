@@ -45,7 +45,7 @@ var passfun = function (app) {
   passport.use(new LinkedInStrategy({
     clientID: liclientID,
     clientSecret: liclientsecret,
-    callbackURL: "http://localhost:3000/auth/linkedin/callback",
+    callbackURL: licallbackurl,
     scope: ['r_network', 'r_fullprofile'],
     state: true,
     passReqToCallback: true

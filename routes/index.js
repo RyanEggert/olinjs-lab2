@@ -41,7 +41,7 @@ var gift_post = function (req, res) {
   }
 
   amazon(data.money, data.searchindices, function (data) {
-    res.render('random', data);
+    res.render('prod_display', data);
   });
 };
 
