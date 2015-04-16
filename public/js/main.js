@@ -8,7 +8,7 @@ $(window).scroll(function() {
 
 //Variables
 var $deletebuttons = $("button.delete");
-$newcheepin = $('form#newcheep');
+$tweee_form = $('form#newtweee');
 var currentuser = $('nav').attr("user");
 if (currentuser === "") {
   currentuser = "None";
@@ -18,13 +18,13 @@ var $gift_form = $("#gift_form");
 
 //Event Callback Funtions
 var shownewtweet = function(data, status) {
-  $('div.newcheep').after(data);
-  $newcheepin.find('#in_cheep').val('');
-  yourdeletebuttons(currentuserid);
+  $('div#newcomment').after(data);
+  $tweee_form.find('#in_tweee').val('');
+  hidedeletebuttons(currentuserid);
 };
 
 var hideoldtweet = function(data, status) {
-  $('div.cheep#' + String(data._id)).hide(1000);
+  $('div.tweee#' + String(data._id)).hide(1000);
 };
 
 var homepage = function(data, status) {
@@ -38,7 +38,7 @@ var onError = function(data, status) {
 var deletehandler = function(event) {
   event.preventDefault();
   orderid = $(this).attr('id'); //get order id to cancel
-  $.ajax("/cheep/delete/", {
+  $.ajax("/tweee/delete/", {
       type: "DELETE",
       data: {
         orderid: orderid
@@ -48,23 +48,23 @@ var deletehandler = function(event) {
     .error(onError);
 };
 
-var highlightcheeps = function(event) {
+var highlight = function(event) {
   event.preventDefault();
   // unhighlight other users
   $("div#users div").css('background-color', 'transparent');
   // highlight clicked user
-  $(this).css('background-color', 'yellow');
-  // unhighlight all cheeps
-  $("div.cheep").css('background-color', 'rgb(130, 150, 200)');
-  // highlight user's cheeps
-  $("div.cheep[uid=" + $(this).attr('uid') + "]").css('background-color', 'yellow');
+  $(this).css('background-color', 'orange');
+  // unhighlight all tweees
+  $("div.tweee").css('background-color', '#aaa');
+  // highlight user's tweees
+  $("div.tweee[uid=" + $(this).attr('uid') + "]").css('background-color', 'orange');
 };
 
-var unhighlightcheeps = function(event) {
+var unhighlight = function(event) {
   event.preventDefault();
-  // unhighlight all users & cheeps
+  // unhighlight all users & tweees
   $("div#users div").css('background-color', 'transparent');
-  $("div.cheep").css('background-color', 'rgb(130, 150, 200)');
+  $("div.tweee").css('background-color', '#aaa');
 };
 
 var logouthandler = function(event) {
@@ -72,11 +72,11 @@ var logouthandler = function(event) {
   $.post('/logout').done(homepage).error(onError);
 };
 
-var newcheep = function() {
-  cheep = $newcheepin.find('#in_cheep').val();
-  $.post('/cheep/new/', {
+var newtweee = function() {
+  words = $tweee_form.find('#in_tweee').val();
+  $.post('/tweee/new/', {
     'username': currentuser,
-    'words': cheep
+    'words': words
   }).done(shownewtweet).error(onError);
 };
 
@@ -104,13 +104,12 @@ var gift_submit = function() {
 
 // Page Functions
 if (currentuser === "") {
-  $newcheepin.hide();
+  $tweee_form.hide();
 }
 
-// if "Cheep!" button pressed, send new cheep
-$newcheepin.submit(function(event) {
+$tweee_form.submit(function(event) {
   event.preventDefault();
-  newcheep();
+  newtweee();
 });
 
 $gift_form.submit(function(event) {
@@ -120,40 +119,39 @@ $gift_form.submit(function(event) {
 
 });
 
-// if "enter" key pressed in cheep box, send new cheep
 $('textarea').keypress(function(event) {
 
   if (event.keyCode == 13) {
     event.preventDefault();
-    newcheep();
+    newtweee();
   }
 });
 
 $("div#feed").on("click", "button.delete", deletehandler);
 
-$("div#users").on("click", "div.usernamedisp", highlightcheeps);
+$("div#users").on("click", "div.usernamedisp", highlight);
 
-$("div#users").on("click", "div#clearuserhl", unhighlightcheeps);
+$("div#users").on("click", "div#clearuserhl", unhighlight);
 
 $("nav li#signout").on("click", logouthandler);
 
 // User Functions
 
 // hide delete buttons
-var yourdeletebuttons = function(uid) {
+var hidedeletebuttons = function(uid) {
   var searchstring = "button.delete:not([uid=" + uid + "])";
   $(searchstring).hide();
 };
 
-// hide cheep entry
-var canyoucheep = function(username) {
+// hide entry
+var hidetweee = function(username) {
   if (username === "None") {
-    $("div.newcheep").remove();
+    $("div.newtweee").remove();
   }
 };
 
 // hide sign out button if no user
-var canyouso = function(username) {
+var hidesign = function(username) {
   if (username === "None") {
     $('nav li#signout').remove();
   } else {
@@ -161,6 +159,6 @@ var canyouso = function(username) {
   }
 };
 
-yourdeletebuttons(currentuserid);
-canyoucheep(currentuser);
-canyouso(currentuser);
+hidedeletebuttons(currentuserid);
+hidetweee(currentuser);
+hidesign(currentuser);

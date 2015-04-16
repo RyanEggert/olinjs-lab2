@@ -1,5 +1,4 @@
 // Routes relating to users
-
 var userroutes = {};
 // new user
 var newuser = function(req, res) {

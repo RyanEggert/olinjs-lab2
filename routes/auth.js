@@ -1,5 +1,3 @@
-// Routes related to signing in and signing out.
-// Given more time, I could put most Passport stuff here.
 var authroutes = {};
 
 var login = function(req, res) {

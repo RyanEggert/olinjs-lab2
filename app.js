@@ -1,6 +1,3 @@
-//// CHEEPR ////
-// "Like twitter, but cheepr." //
-
 // external requirements
 var express = require("express");
 var path = require("path");
@@ -21,7 +18,7 @@ var module_exists = function(name) {
 };
 
 // internal requirements
-var cheeprs = require("./routes/cheepr");
+var tweee = require("./routes/tweee");
 var users = require("./routes/users");
 var authrs = require("./routes/auth");
 if (module_exists('./oauth.js')) {
@@ -91,14 +88,13 @@ passport.use(new LocalStrategy(
     authUser.findOrCreate({
       'local.username': username
     }, {
-      'local.password': password,
       'name': username,
     }, function(err, user) {
       if (err) {
         return done(err);
       }
       if (!user) {
-        users.makeuser(username, password);
+        users.makeuser(username);
         return done(donereturn.err, donereturn.ret);
       }
       if (!user.verifyPassword(password, user)) {
@@ -128,9 +124,7 @@ passport.deserializeUser(function(obj, done) {
 });
 
 // routes
-app.get('/', ensureAuthenticated, cheeprs.home);
-app.get('/gift/:name', cheeprs.gift_get);
-app.post('/gift/:name', cheeprs.gift_post);
+app.get('/', ensureAuthenticated, tweee.home);
 
 app.get('/login', authrs.login);
 app.post('/logout', function(req, res) {
@@ -149,8 +143,8 @@ app.post('/users/auth/local',
 
 app.post('/users/new/', users.new);
 
-app.post('/cheep/new/', cheeprs.new);
-app.delete('/cheep/delete/', cheeprs.delete);
+app.post('/tweee/new/', tweee.new);
+app.delete('/tweee/delete/', tweee.delete);
 
 
 app.get('/auth/facebook/',
